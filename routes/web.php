@@ -32,12 +32,19 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+
     Route::middleware(['role:Administrator'])->group(function () {
         Route::resource('users', UserController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('products', ProductController::class);
     });
 
-    Route::resource('products', ProductController::class);
-    Route::resource('categories', CategoryController::class);
+    Route::middleware(['role:User'])->group(function () {
+        Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('categories', CategoryController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+    });
+
 });
+
 
 require __DIR__.'/auth.php';
