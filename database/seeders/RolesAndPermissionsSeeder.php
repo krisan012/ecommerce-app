@@ -14,21 +14,18 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create roles
-        $adminRole = Role::create(['name' => 'Administrator']);
-        $userRole = Role::create(['name' => 'User']);
-
-        // Create permissions
-        Permission::create(['name' => 'manage products']);
-        Permission::create(['name' => 'manage categories']);
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        // create permissions
         Permission::create(['name' => 'manage users']);
+        Permission::create(['name' => 'manage categories']);
+        Permission::create(['name' => 'manage products']);
 
-        // Assign permissions to roles
-        $adminRole->givePermissionTo('manage products');
-        $adminRole->givePermissionTo('manage categories');
-        $adminRole->givePermissionTo('manage users');
+        // create roles and assign created permissions
+        $adminRole = Role::create(['name' => 'Administrator']);
+        $adminRole->givePermissionTo(['manage users', 'manage categories', 'manage products']);
 
-        $userRole->givePermissionTo('manage products');
-        $userRole->givePermissionTo('manage categories');
+        $userRole = Role::create(['name' => 'User']);
+        $userRole->givePermissionTo(['manage categories', 'manage products']);
     }
 }

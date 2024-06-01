@@ -17,6 +17,7 @@
                             <th class="px-4 py-2">Description</th>
                             <th class="px-4 py-2">Price</th>
                             <th class="px-4 py-2">Stock</th>
+                            <th class="px-4 py-2">Categories</th>
                             <th class="px-4 py-2">Actions</th>
                         </tr>
                         </thead>
@@ -28,13 +29,23 @@
                                 <td class="border px-4 py-2">{{ $product->price }}</td>
                                 <td class="border px-4 py-2">{{ $product->stock }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-info">Show</a>
-                                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
+                                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300">
+                                        @foreach($product->categories as $category)
+                                            <li>{{ $category->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td class="border px-4 py-2">
+                                    <div class="flex justify-center gap-4">
+                                        <a href="{{ route('products.show', $product->id) }}" class="items-center px-2 py-1 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">Show</a>
+                                        <a href="{{ route('products.edit', $product->id) }}" class="px-2 py-1 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">Edit</a>
+                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-2 py-1 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white">Delete</button>
+                                        </form>
+                                    </div>
+
                                 </td>
                             </tr>
                         @endforeach

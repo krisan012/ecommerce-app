@@ -33,15 +33,21 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::middleware(['role:Administrator'])->group(function () {
+    Route::middleware(['permission:manage users'])->group(function () {
         Route::resource('users', UserController::class);
-        Route::resource('categories', CategoryController::class);
-        Route::resource('products', ProductController::class);
     });
 
-    Route::middleware(['role:User'])->group(function () {
-        Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'index']);
+    Route::middleware(['permission:manage categories'])->group(function () {
+        Route::resource('categories', CategoryController::class)->names('admin.categories');
+    });
+
+    Route::middleware(['permission:manage products'])->group(function () {
+        Route::resource('products', ProductController::class)->names('admin.products');
+    });
+
+    Route::middleware(['permission:manage categories|manage products'])->group(function () {
         Route::resource('categories', CategoryController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'index']);
+        Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'index', 'show']);
     });
 
 });
