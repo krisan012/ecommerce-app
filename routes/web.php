@@ -40,8 +40,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['role:User'])->group(function () {
-        Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
-        Route::resource('categories', CategoryController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'index']);
+        Route::resource('categories', CategoryController::class)->only(['create', 'store', 'edit', 'update', 'destroy', 'index']);
     });
 
 });
